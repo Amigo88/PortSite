@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <ul>
+        {{ form.as_ul }}
+        <button>Login</button>
+    </ul>
+</form>
