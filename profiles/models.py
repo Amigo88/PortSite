@@ -8,7 +8,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=200)
     contact_mail = models.EmailField()
     short_description = models.CharField(max_length=1000)
-#
-# class Photo(models.Model):
-#     profile = models.ForeignKey(Profile)
-#     image = models.ImageField()
+
+class Photo(models.Model):
+    profile = models.ForeignKey(Profile)
+    image = models.ImageField(upload_to="photos/")
