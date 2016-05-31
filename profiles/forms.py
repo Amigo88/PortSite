@@ -8,9 +8,10 @@ class LoginForm(forms.Form):
 
 class ProfileForm(forms.ModelForm):
     class Meta:
+        model = models.Profile
         fields = [
-            'First name',
-            'Last name',
-            'Contact Email',
-            'Short Description'
+            'first_name',
+            'last_name',
+            'contact_mail',
+            'short_description'
         ]
