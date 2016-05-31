@@ -48,6 +48,10 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_extensions',
+
+    'portfolios',
 ]
 
 ROOT_URLCONF = 'portsite.urls'
