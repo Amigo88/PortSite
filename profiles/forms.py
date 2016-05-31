@@ -11,14 +11,6 @@ class ProfileForm(forms.ModelForm):
         fields = [
             'First name',
             'Last name',
-            'EMail',
+            'Contact Email',
             'Short Description'
-        ]
-
-
-
-class PortfolioForm(forms.Form):
-    class Meta:
-        fields = [
-
         ]
