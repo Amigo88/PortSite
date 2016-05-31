@@ -1,11 +1,20 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
 
+
+<head>
+    <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
 <form method="post">
     {% csrf_token %}
-
-    <ul>
-        {{ form.as_ul }}
-        <button>Login</button>
-    </ul>
+    {% bootstrap_form form %}
+        {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Login
+                </button>
+        {% endbuttons %}
 </form>
+</div>
+</body>
