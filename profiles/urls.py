@@ -6,4 +6,5 @@ app_name = "profiles"
 urlpatterns = [
     url(r'^$', views.ListProfilesView.as_view(), name="list"),
     url(r'^add/$', views.CreateProfileView.as_view(), name="create"),
+    url(r'^(?P<pk>\d+)/$', views.ProfileDetailView.as_view(), name="profile"),
 ]
