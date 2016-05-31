@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, redirect
 from django.utils.encoding import escape_uri_path
 from django.views.generic import FormView, CreateView, ListView
+from django.views.generic.detail import DetailView
+
 from . import forms, models
 from django.views.generic import View
 
@@ -48,11 +50,17 @@ class LoggedInMixin:
 class ListProfilesView(LoggedInMixin, ListView):
     page_title = "Profiles"
     model = models.Profile
-    template_name = "profiles\profile_list.html"
+    # template_name = "profiles\profile_list.html"
 
 
 class CreateProfileView(LoggedInMixin, CreateView):
     page_title = "Create New Profile"
     model = models.Profile
     form_class = forms.ProfileForm
-    template_name = "profiles\portfolio_form.html"
+    # template_name = "profiles\profile_form.html"
+
+
+class ProfileDetailView(LoggedInMixin, DetailView):
+    page_title = "{}"
+    model = models.Profile
+    # template_name = "profiles\profile_list.html"
