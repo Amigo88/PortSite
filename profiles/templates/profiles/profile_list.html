@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Contact mail</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+            <tr>
+                <td>{{ object.first_name }}</td>
+                <td>{{ object.last_name }}</td>
+                <td>{{ object.contact_mail }}</td>
+                <td>{{ object.short_description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
