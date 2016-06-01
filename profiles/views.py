@@ -65,7 +65,7 @@ class CreateProfileView(LoggedInMixin, CreateView):
 
 class ProfileDetailView(LoggedInMixin, DetailView):
     page_title = "Portfolio"
-    model = models.Photo
+    model = models.Profile
 
     # def get_queryset(self):
     #     return super().get_queryset().filter(profile__user=self.request.user)
