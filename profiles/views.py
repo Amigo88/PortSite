@@ -64,8 +64,11 @@ class CreateProfileView(LoggedInMixin, CreateView):
 
 
 class ProfileDetailView(LoggedInMixin, DetailView):
-    page_title = "{}"
-    model = models.Profile
+    page_title = "Portfolio"
+    model = models.Photo
+
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(profile__user=self.request.user)
     # template_name = "profiles\profile_list.html"
 
 

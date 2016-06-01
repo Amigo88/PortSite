@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 
 
@@ -11,6 +12,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return  reverse("profiles:detail", args=(self.pk,))
 
 class Photo(models.Model):
     profile = models.ForeignKey(Profile)

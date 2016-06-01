@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+    <ul>
+        <li class="list-group-item">
+{#            <img src="{{ object.image.url }}" class="img-responsive">#}
+            {{ object.image.url }}
+        </li>
+    </ul>
+{% endblock %}
