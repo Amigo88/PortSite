@@ -19,23 +19,21 @@
 <div class="container">
 
 
-
     <div style="float:right">
-        <a href="{% url "profiles:list" %}">Home</a>
-        |
-        <a href="{% url "profiles:create" %}">Add new Profile</a>
-        |
-        <a href="{% url "profiles:add" %}">Add Work</a>
-        |
-        {{ user }}
-        |
-        <a href="{% url 'logout' %}">Logout</a>
+        <ul class="nav nav-pills">
+            <li role="presentation"><a href="{% url "profiles:list" %}">Home</a></li>
+            <li role="presentation"><a href="{% url "profiles:create" %}">Add new Profile</a></li>
+            <li role="presentation"><a href="{% url "profiles:add" %}">Add Work</a></li>
+            <li role="presentation"><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
     </div>
 
     <h1>
-        Profiles
+        PortSite
     </h1>
-
+    <h3>
+        {{ user.profile }}
+    </h3>
     <div>
 
         {% block content %}

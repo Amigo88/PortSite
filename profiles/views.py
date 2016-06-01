@@ -78,3 +78,8 @@ class AddWorkView(LoggedInMixin, CreateView):
     form_class = forms.PhotoForm
 
     success_url = reverse_lazy('profiles:list')
+
+    def get_initial(self):
+        d= super().get_initial()
+        d['profile']=self.request.user.profile
+        return d
