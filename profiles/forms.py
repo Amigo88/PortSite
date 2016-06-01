@@ -10,8 +10,17 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = [
+            'user',
             'first_name',
             'last_name',
             'contact_mail',
             'short_description'
+        ]
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = models.Photo
+        fields = [
+            'profile',
+            'image',
         ]

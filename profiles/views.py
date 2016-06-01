@@ -57,6 +57,9 @@ class CreateProfileView(LoggedInMixin, CreateView):
     page_title = "Create New Profile"
     model = models.Profile
     form_class = forms.ProfileForm
+
+    success_url = reverse_lazy('profiles:list')
+
     # template_name = "profiles\profile_form.html"
 
 
@@ -64,3 +67,11 @@ class ProfileDetailView(LoggedInMixin, DetailView):
     page_title = "{}"
     model = models.Profile
     # template_name = "profiles\profile_list.html"
+
+
+class AddWorkView(LoggedInMixin, CreateView):
+    page_title = "Add Work"
+    model = models.Photo
+    form_class = forms.PhotoForm
+
+    success_url = reverse_lazy('profiles:list')
