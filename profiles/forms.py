@@ -22,5 +22,4 @@ class PhotoForm(forms.ModelForm):
         model = models.Photo
         fields = [
             'image',
-            'profile'
         ]

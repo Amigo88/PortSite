@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.utils.encoding import escape_uri_path
-from django.views.generic import FormView, CreateView, ListView
+from django.views.generic import FormView, CreateView, ListView, DeleteView
 from django.views.generic.detail import DetailView
 
 from . import forms, models
@@ -79,7 +81,32 @@ class AddWorkView(LoggedInMixin, CreateView):
 
     success_url = reverse_lazy('profiles:list')
 
-    def get_initial(self):
-        d= super().get_initial()
-        d['profile']=self.request.user.profile
-        return d
+    def form_valid(self, form):
+        form.instance.profile = self.request.user.profile
+        return super().form_valid(form)
+
+
+class DeleteWorkView(LoggedInMixin, DeleteView):
+    page_title = "Delete Work"
+    model = models.Photo
+    form_class = forms.PhotoForm
+
+    def get_object(self, queryset=None):
+        obj = super(DeleteWorkView, self).get_object()
+        if obj.profile.user != self.request.user:
+            raise Http404()
+        return obj
+
+    def get_success_url(self):
+        return self.object.profile.get_absolute_url()
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            self.get_object().image.delete()
+        except IOError:
+            pass
+        resp = super().delete(request, *args, **kwargs)
+        messages.info(request, "Photo deleted")
+        return resp
+
+

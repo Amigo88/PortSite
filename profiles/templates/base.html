@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
 
 
 <!DOCTYPE html>
@@ -24,16 +24,14 @@
             <li role="presentation"><a href="{% url "profiles:list" %}">Home</a></li>
             <li role="presentation"><a href="{% url "profiles:create" %}">Add new Profile</a></li>
             <li role="presentation"><a href="{% url "profiles:add" %}">Add Work</a></li>
-            <li role="presentation"><a href="{% url 'logout' %}">Logout</a></li>
+            <li role="presentation"><a href="{% url "logout" %}">Logout</a></li>
         </ul>
     </div>
 
     <h1>
-        PortSite
+        PortSite: <a href="">{{ user.profile }}</a>
     </h1>
-    <h3>
-        {{ user.profile }}
-    </h3>
+    {% bootstrap_messages %}
     <div>
 
         {% block content %}

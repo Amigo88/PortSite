@@ -14,7 +14,8 @@ class Profile(models.Model):
         return "{} {}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return  reverse("profiles:detail", args=(self.pk,))
+        return reverse("profiles:detail", args=(self.pk,))
+
 
 class Photo(models.Model):
     profile = models.ForeignKey(Profile)
