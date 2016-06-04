@@ -13,32 +13,42 @@
         {% endblock %}
     </title>
     <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "bootstrap/css/thumbnail-gallery.css" %}" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 </head>
 <body>
-
-<div class="container">
-
-
-    <div style="float:right">
-        <ul class="nav nav-pills">
-            <li role="presentation"><a href="{% url "profiles:list" %}">Home</a></li>
-            <li role="presentation"><a href="{% url "profiles:create" %}">Add new Profile</a></li>
-            <li role="presentation"><a href="{% url "profiles:add" %}">Add Work</a></li>
-            <li role="presentation"><a href="{% url "logout" %}">Logout</a></li>
-        </ul>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">PortSite</a>
+        </div>
+        <div class="collapse navbar-collapse" id="#bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{% url "profiles:list" %}">Home</a></li>
+                <li><a href="{% url "profiles:create" %}">Add new Profile</a></li>
+                <li><a href="{% url "profiles:add" %}">Add Work</a></li>
+                <li><a href="{% url "logout" %}">Logout</a></li>
+            </ul>
+        </div>
     </div>
+</nav>
 
-    <h1>
-        PortSite: <a href="">{{ user.profile }}</a>
-    </h1>
-    {% bootstrap_messages %}
-    <div>
+{% bootstrap_messages %}
+<div>
 
-        {% block content %}
-            CONTENT
-        {% endblock %}
+    {% block content %}
+        CONTENT
+    {% endblock %}
 
-    </div>
+</div>
 
 </div>
 

@@ -22,6 +22,7 @@ import profiles.views
 
 urlpatterns = [
     url(r'', include('profiles.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', profiles.views.LoginView.as_view(), name='login'),
     url(r'^logout/$', profiles.views.LogoutView.as_view(), name='logout')
