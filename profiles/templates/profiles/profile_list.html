@@ -15,7 +15,8 @@
         {% for object in object_list %}
             <tr>
                 <td><a href="{{ object.get_absolute_url }}">
-                        {{ object.first_name }}
+                        {{ object.first_name }}<span class="badge">{{ object.photo_set.all.count }}
+                </span>
                     </a>
                 </td>
                 <td>{{ object.last_name }}</td>
