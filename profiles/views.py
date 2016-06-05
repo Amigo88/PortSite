@@ -49,13 +49,17 @@ class LoggedInMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class ListProfilesView(LoggedInMixin, ListView):
+class UIMixin:
+    all_profiles = models.Profile.objects.all()
+
+
+class ListProfilesView(UIMixin,LoggedInMixin, ListView):
     page_title = "Profiles"
     model = models.Profile
     # template_name = "profiles\profile_list.html"
 
 
-class CreateProfileView(LoggedInMixin, CreateView):
+class CreateProfileView(UIMixin, LoggedInMixin, CreateView):
     page_title = "Create New Profile"
     model = models.Profile
     form_class = forms.ProfileForm
@@ -65,7 +69,7 @@ class CreateProfileView(LoggedInMixin, CreateView):
     # template_name = "profiles\profile_form.html"
 
 
-class ProfileDetailView(LoggedInMixin, DetailView):
+class ProfileDetailView(UIMixin, LoggedInMixin, DetailView):
     page_title = "Portfolio"
     model = models.Profile
 
@@ -74,19 +78,22 @@ class ProfileDetailView(LoggedInMixin, DetailView):
     # template_name = "profiles\profile_list.html"
 
 
-class AddWorkView(LoggedInMixin, CreateView):
+class AddWorkView(UIMixin, LoggedInMixin, CreateView):
     page_title = "Add Work"
     model = models.Photo
     form_class = forms.PhotoForm
 
-    success_url = reverse_lazy('profiles:list')
+    def get_success_url(self):
+        return self.object.profile.get_absolute_url()
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
-        return super().form_valid(form)
+        resp = super().form_valid(form)
+        messages.add_message(self.request, messages.SUCCESS, "Workd added")
+        return resp
 
 
-class DeleteWorkView(LoggedInMixin, DeleteView):
+class DeleteWorkView(UIMixin, LoggedInMixin, DeleteView):
     page_title = "Delete Work"
     model = models.Photo
     form_class = forms.PhotoForm
@@ -108,5 +115,3 @@ class DeleteWorkView(LoggedInMixin, DeleteView):
         resp = super().delete(request, *args, **kwargs)
         messages.info(request, "Photo deleted")
         return resp
-
-

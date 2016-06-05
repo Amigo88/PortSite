@@ -1,6 +1,7 @@
 {% load staticfiles bootstrap3 %}
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@
     </title>
     <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
     <link href="{% static "bootstrap/css/thumbnail-gallery.css" %}" rel="stylesheet">
+    <link href="{% static "bootstrap/css/amit.css" %}" rel="stylesheet">
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 </head>
@@ -36,21 +38,43 @@
                 <li><a href="{% url "profiles:create" %}">Add new Profile</a></li>
                 <li><a href="{% url "profiles:add" %}">Add Work</a></li>
                 <li><a href="{% url "logout" %}">Logout</a></li>
+                <li><a href="#">Logged in as: {{ user.profile }}</a></li>
+
             </ul>
         </div>
     </div>
 </nav>
 
-{% bootstrap_messages %}
-<div>
 
+{% bootstrap_messages %}
+<div class="col-md-2 amit">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Owner</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for object in view.all_profiles %}
+            <tr>
+            <td><a href="{{ object.get_absolute_url }}">
+                {{ object }} <span
+                    class="badge">{{ object.photo_set.all.count }}
+                </span>
+            </a>
+            </td>
+
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="col-md-10">
     {% block content %}
         CONTENT
     {% endblock %}
-
 </div>
 
-</div>
 
 </body>
 </html>

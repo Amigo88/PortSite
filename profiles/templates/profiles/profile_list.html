@@ -2,29 +2,10 @@
 
 {% block content %}
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Contact mail</th>
-            <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for object in object_list %}
-            <tr>
-                <td><a href="{{ object.get_absolute_url }}">
-                        {{ object.first_name }}<span class="badge">{{ object.photo_set.all.count }}
-                </span>
-                    </a>
-                </td>
-                <td>{{ object.last_name }}</td>
-                <td>{{ object.contact_mail }}</td>
-                <td>{{ object.short_description }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+    <h1>
+        Welcome To PortSite
+    </h1>
+
 
 {% endblock %}

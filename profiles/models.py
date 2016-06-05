@@ -19,4 +19,4 @@ class Profile(models.Model):
 
 class Photo(models.Model):
     profile = models.ForeignKey(Profile)
-    image = models.ImageField(upload_to="photos/")
+    image = models.ImageField(upload_to="photos/" )

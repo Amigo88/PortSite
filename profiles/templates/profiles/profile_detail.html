@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
 
+
 {% block content %}
-
-
     <h3>{{ object }}'s Portfolio</h3>
     {% if object.photo_set.all %}
-        <div class="row">
+        <div>
             {% for photo in object.photo_set.all %}
                 <div class="col-lg-4 col-md-4 col-xs-10 thumb">
                     <a href="#" class="this-page">
@@ -21,4 +20,11 @@
     {% else %}
         {{ object.user.profile }} does't have any works (yet!).
     {% endif %}
+    <div class="row">
+        Contact {{ object.user.profile }}:
+    </div>
+    <div class="row">
+        <a href="#">{{ object.user.profile.contact_mail }}</a>
+    </div>
 {% endblock %}
+
