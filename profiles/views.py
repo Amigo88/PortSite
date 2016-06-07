@@ -50,7 +50,12 @@ class LoggedInMixin:
 
 
 class UIMixin:
-    all_profiles = models.Profile.objects.all()
+    def get_context_data(self, **kwargs):
+        d = super().get_context_data(**kwargs)
+        d['all_profiles'] = models.Profile.objects.all()
+        return d
+
+    # all_profiles = models.Profile.objects.all()
 
 
 class ListProfilesView(UIMixin,LoggedInMixin, ListView):
@@ -63,6 +68,8 @@ class CreateProfileView(UIMixin, LoggedInMixin, CreateView):
     page_title = "Create New Profile"
     model = models.Profile
     form_class = forms.ProfileForm
+
+
 
     success_url = reverse_lazy('profiles:list')
 
