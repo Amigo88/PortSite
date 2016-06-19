@@ -6,7 +6,10 @@ app_name = "profiles"
 urlpatterns = [
     url(r'^$', views.ListProfilesView.as_view(), name="list"),
     url(r'^add_profile/$', views.CreateProfileView.as_view(), name="create"),
-    url(r'^add_work/$', views.AddWorkView.as_view(), name="add"),
+    url(r'^profile/projects/(?P<project_id>\d+)/add_work/$', views.AddWorkView.as_view(), name="add_work"),
+    url(r'^profile/(?P<profile_id>\d+)/add_project/$', views.AddProjectView.as_view(), name="add_project"),
     url(r'^delete_work/(?P<pk>\d+)/$', views.DeleteWorkView.as_view(), name="delete"),
+    url(r'^delete_project/(?P<pk>\d+)/$', views.DeleteProjectView.as_view(), name="project_delete"),
     url(r'^profile/(?P<pk>\d+)/$', views.ProfileDetailView.as_view(), name="detail"),
+    url(r'^profile/projects/(?P<pk>\d+)/$', views.ProjectDetailView.as_view(), name="project_detail"),
 ]

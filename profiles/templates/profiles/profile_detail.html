@@ -4,21 +4,26 @@
 
 {% block content %}
     <h3>{{ object }}'s Portfolio</h3>
-    {% if object.photo_set.all %}
+    {% if  object.user == user %}
+        <a href="{% url "profiles:add_project" object.pk %}">Add Project</a>
+    {% endif %}
+    {% if object.projects.all %}
         <div>
-            {% for photo in object.photo_set.all %}
+            {% for project in object.projects.all %}
                 <div class="col-lg-4 col-md-4 col-xs-10 thumb">
-                    <a href="#" class="this-page">
-                        <img src="{{ photo.image.url }}" class="img-rounded img-responsive">
+                    {{ project }}
+                    <a href="{{ project.get_absolute_url }}" class="this-page">
+                        <img src="http://placehold.it/150x150" class="img-rounded img-responsive">
                     </a>
                     {% if object.user == user %}
-                        <h4 role="presentation"><a href="{% url "profiles:delete" photo.pk %}">Delete Work</a></h4>
+                        <h4 role="presentation"><a href="{% url "profiles:project_delete" project.pk %}">Delete
+                            Project</a></h4>
                     {% endif %}
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        {{ object.user.profile }} does't have any works (yet!).
+        {{ object.user.profile }} does't have any Projects (yet!).
     {% endif %}
     <div class="row">
         Contact {{ object.user.profile }}:

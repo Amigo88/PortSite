@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load bootstrap3 %}
 
-</body>
-</html>
+
+{% block content %}
+    <h3>{{ object.profile }}'s {{ object }}</h3>
+    {% if  object.profile.user == user %}
+        <a href="{% url "profiles:add_work" object.pk %}">Add Work</a>
+    {% endif %}
+    {% if object.photos.all %}
+        <div>
+            {% for photo in object.photos.all %}
+                <div class="col-lg-4 col-md-4 col-xs-10 thumb">
+                    <a href="#" class="this-page">
+                        <img src="{{ photo.image.url }}" class="img-rounded img-responsive">
+                    </a>
+                    {% if object.profile.user == user %}
+                        <h4 role="presentation"><a href="{% url "profiles:delete" photo.pk %}">Delete Work</a></h4>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ object.user.profile }} does't have any works (yet!).
+    {% endif %}
+    <div class="row">
+        Contact {{ object.user.profile }}:
+    </div>
+    <div class="row">
+        <a href="#">{{ object.user.profile.contact_mail }}</a>
+    </div>
+{% endblock %}
+

@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.encoding import escape_uri_path
 from django.views.generic import FormView, CreateView, ListView, DeleteView
 from django.views.generic.detail import DetailView
@@ -55,10 +55,10 @@ class UIMixin:
         d['all_profiles'] = models.Profile.objects.all()
         return d
 
-    # all_profiles = models.Profile.objects.all()
+        # all_profiles = models.Profile.objects.all()
 
 
-class ListProfilesView(UIMixin,LoggedInMixin, ListView):
+class ListProfilesView(UIMixin, LoggedInMixin, ListView):
     page_title = "Profiles"
     model = models.Profile
     # template_name = "profiles\profile_list.html"
@@ -68,8 +68,6 @@ class CreateProfileView(UIMixin, LoggedInMixin, CreateView):
     page_title = "Create New Profile"
     model = models.Profile
     form_class = forms.ProfileForm
-
-
 
     success_url = reverse_lazy('profiles:list')
 
@@ -85,10 +83,44 @@ class ProfileDetailView(UIMixin, LoggedInMixin, DetailView):
     # template_name = "profiles\profile_list.html"
 
 
+class ProjectDetailView(UIMixin, LoggedInMixin, DetailView):
+    page_title = "Project"
+    model = models.Project
+
+
 class AddWorkView(UIMixin, LoggedInMixin, CreateView):
     page_title = "Add Work"
     model = models.Photo
     form_class = forms.PhotoForm
+
+    def dispatch(self, request, project_id, *args, **kwargs):
+        self.project = get_object_or_404(models.Project, id=project_id)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(project=self.project)
+
+    def get_success_url(self):
+        return self.project.get_absolute_url()
+
+    def form_valid(self, form):
+        form.instance.project = self.project
+        resp = super().form_valid(form)
+        messages.add_message(self.request, messages.SUCCESS, "Workd added")
+        return resp
+
+
+class AddProjectView(UIMixin, LoggedInMixin, CreateView):
+    page_title = "Add Project"
+    model = models.Project
+    form_class = forms.ProjectForm
+
+    def get(self, request, profile_id, *args, **kwargs):
+        self.profile = get_object_or_404(models.Profile, id=profile_id)
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.profile)
 
     def get_success_url(self):
         return self.object.profile.get_absolute_url()
@@ -96,7 +128,7 @@ class AddWorkView(UIMixin, LoggedInMixin, CreateView):
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
         resp = super().form_valid(form)
-        messages.add_message(self.request, messages.SUCCESS, "Workd added")
+        messages.add_message(self.request, messages.SUCCESS, "Project added")
         return resp
 
 
@@ -107,6 +139,30 @@ class DeleteWorkView(UIMixin, LoggedInMixin, DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(DeleteWorkView, self).get_object()
+        if obj.project.profile.user != self.request.user:
+            raise Http404()
+        return obj
+
+    def get_success_url(self):
+        return self.object.project.get_absolute_url()
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            self.get_object().image.delete()
+        except IOError:
+            pass
+        resp = super().delete(request, *args, **kwargs)
+        messages.info(request, "Photo deleted")
+        return resp
+
+
+class DeleteProjectView(UIMixin, LoggedInMixin, DeleteView):
+    page_title = "Delete Project"
+    model = models.Project
+    form_class = forms.ProjectForm
+
+    def get_object(self, queryset=None):
+        obj = super(DeleteProjectView, self).get_object()
         if obj.profile.user != self.request.user:
             raise Http404()
         return obj
@@ -116,9 +172,10 @@ class DeleteWorkView(UIMixin, LoggedInMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            self.get_object().image.delete()
+            for photo in self.get_object().photos.all():
+                photo.image.delete()
         except IOError:
             pass
         resp = super().delete(request, *args, **kwargs)
-        messages.info(request, "Photo deleted")
+        messages.info(request, "Project deleted")
         return resp

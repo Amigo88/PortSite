@@ -7,7 +7,7 @@
         <div class="col-lg-2">
             <p>Are you sure you want to delete this work?</p>
             <img src="{{ object.image.url }}">
-            <a href="{% url "profiles:detail" object.profile.pk %}">
+            <a href="{% url "profiles:detail" object.project.profile.pk %}">
                 {% buttons %}
                     <button type="confirm" class="btn btn-primary" value="confirm">
                         Delete {% bootstrap_icon "trash" %}

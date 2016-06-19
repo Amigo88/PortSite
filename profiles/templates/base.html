@@ -1,7 +1,6 @@
 {% load staticfiles bootstrap3 %}
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,13 +29,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand">PortSite</a>
+            <a class="navbar-brand" href={% url "profiles:list" %}>PortSite</a>
         </div>
         <div class="collapse navbar-collapse" id="#bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="{% url "profiles:list" %}">Home</a></li>
                 <li><a href="{% url "profiles:create" %}">Add new Profile</a></li>
-                <li><a href="{% url "profiles:add" %}">Add Work</a></li>
+                {#                <li><a href="{% url "profiles:add_project" %}">Add Project</a></li>#}
+                {#                <li><a href="{% url "profiles:add_work" %}">Add Work</a></li>#}
                 <li><a href="{% url "logout" %}">Logout</a></li>
                 <li><a href="#">Logged in as: {{ user.profile }}</a></li>
 
@@ -45,34 +44,37 @@
     </div>
 </nav>
 
-
 {% bootstrap_messages %}
-<div class="col-md-2 amit">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Owner</th>
-        </tr>
-        </thead>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 amit">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Owner</th>
+                </tr>
+                </thead>
 
-        <tbody>
-        {% for object in all_profiles %}
-            <tr>
-            <td><a href="{{ object.get_absolute_url }}">
-                {{ object }} <span
-                    class="badge">{{ object.photo_set.all.count }}
+                <tbody>
+                {% for object in all_profiles %}
+                    <tr>
+                    <td><a href="{{ object.get_absolute_url }}">
+                        {{ object }} <span
+                            class="badge">{{ object.projects.all.count }}
                 </span>
-            </a>
-            </td>
+                    </a>
+                    </td>
 
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div class="col-md-10">
-    {% block content %}
-        CONTENT
-    {% endblock %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-10">
+            {% block content %}
+                CONTENT
+            {% endblock %}
+        </div>
+    </div>
 </div>
 
 

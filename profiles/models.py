@@ -17,6 +17,18 @@ class Profile(models.Model):
         return reverse("profiles:detail", args=(self.pk,))
 
 
+class Project(models.Model):
+    profile = models.ForeignKey(Profile, related_name="projects")
+    name = models.CharField(max_length=200)
+    short_description = models.CharField(max_length=500)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+    def get_absolute_url(self):
+        return reverse("profiles:project_detail", args=(self.pk,))
+
+
 class Photo(models.Model):
-    profile = models.ForeignKey(Profile)
-    image = models.ImageField(upload_to="photos/" )
+    project = models.ForeignKey(Project, related_name="photos")
+    image = models.ImageField(upload_to="photos/")

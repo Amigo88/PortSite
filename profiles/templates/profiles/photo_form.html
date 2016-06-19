@@ -5,14 +5,12 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="col-sm-2">
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                Save {% bootstrap_icon "save" %}
-            </button>
-        {% endbuttons %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Save {% bootstrap_icon "save" %}
+                </button>
+            {% endbuttons %}
         </div>
-    </form>
-
     </form>
 {% endblock %}

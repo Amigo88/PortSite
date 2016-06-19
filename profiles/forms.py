@@ -6,6 +6,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=300)
     password = forms.CharField(max_length=300, widget=forms.PasswordInput())
 
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
@@ -17,9 +18,19 @@ class ProfileForm(forms.ModelForm):
             'short_description'
         ]
 
+
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = models.Photo
         fields = [
             'image',
+        ]
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = models.Project
+        fields = [
+            'name',
+            'short_description',
         ]

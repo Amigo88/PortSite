@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load bootstrap3 %}
 
-</body>
-</html>
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-sm-2">
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Save {% bootstrap_icon "save" %}
+            </button>
+        {% endbuttons %}
+        </div>
+    </form>
+
+    </form>
+{% endblock %}
