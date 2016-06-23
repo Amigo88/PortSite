@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.encoding import escape_uri_path
 from django.views.generic import FormView, CreateView, ListView, DeleteView
@@ -187,7 +187,7 @@ class DeleteProjectView(UIMixin, LoggedInMixin, DeleteView):
     form_class = forms.ProjectForm
 
     def dispatch(self, request, profile_id, *args, **kwargs):
-        self.profile= get_object_or_404(models.Profile, id=profile_id)
+        self.profile = get_object_or_404(models.Profile, id=profile_id)
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
@@ -228,3 +228,17 @@ class SignupView(FormView):
         if self.request.GET.get('from'):
             return redirect(self.request.GET['from'])
         return redirect('profiles:list')
+
+
+class HandleLikeView(View):
+    def post(self, request, *args, **kwargs):
+        project = models.Project.objects.filter(pk=kwargs['project_id']).first()
+        likes = models.ProjectLike.objects.filter(project=project, user=request.user)
+
+        if not likes.count() > 0:
+            like = models.ProjectLike(project=project, user=request.user)
+            like.save()
+        else:
+            like = likes.first()
+            models.ProjectLike.delete(like)
+        return JsonResponse({'likes_count': models.ProjectLike.objects.filter(project=project).count()})

@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 
+
 #
 # class Owner(models.Model):
 #     user = models.OneToOneField(
@@ -43,3 +44,13 @@ class Project(models.Model):
 class Photo(models.Model):
     project = models.ForeignKey(Project, related_name="photos")
     image = models.ImageField(upload_to="photos/")
+
+
+class ProjectLike(models.Model):
+    project = models.ForeignKey(Project, related_name="likes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="likes")
+
+    class Meta:
+        unique_together = (
+            ('project', 'user'),
+        )

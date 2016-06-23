@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^profile/(?P<pk>\d+)/$', views.ProfileDetailView.as_view(), name="detail"),
     url(r'^profile/(?P<profile_id>\d+)/projects/(?P<pk>\d+)/$', views.ProjectDetailView.as_view(), name="project_detail"),
     url(r'^signup/$', views.SignupView.as_view(), name="signup"),
+    url(r'^profile/(?P<profile_id>\d+)/projects/(?P<project_id>\d+)/likes/$', views.HandleLikeView.as_view(), name="likes"),
 ]
