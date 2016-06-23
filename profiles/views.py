@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -71,7 +72,20 @@ class CreateProfileView(UIMixin, LoggedInMixin, CreateView):
 
     success_url = reverse_lazy('profiles:list')
 
-    # template_name = "profiles\profile_form.html"
+    def dispatch(self, request, pk, *args, **kwargs):
+        self.user = get_object_or_404(models.User, id=pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user = self.user
+        form.instance.first_name = self.user.first_name
+        form.instance.last_name = self.user.last_name
+        form.instance.contact_mail = self.user.email
+        resp = super().form_valid(form)
+        messages.add_message(self.request, messages.SUCCESS, "Profile added")
+        return resp
+
+        # template_name = "profiles\profile_form.html"
 
 
 class ProfileDetailView(UIMixin, LoggedInMixin, DetailView):
@@ -179,3 +193,23 @@ class DeleteProjectView(UIMixin, LoggedInMixin, DeleteView):
         resp = super().delete(request, *args, **kwargs)
         messages.info(request, "Project deleted")
         return resp
+
+
+class SignupView(FormView):
+    page_title = "Signup"
+    form_class = forms.SignupForm
+    template_name = "signup.html"
+    success_url = reverse_lazy('profiles:list')
+
+    def form_valid(self, form):
+        if form.cleaned_data['password'] != form.cleaned_data.pop('password_validation'):
+            form.add_error(None, "Passwords do not match")
+            return self.form_invalid(form)
+
+        user = User.objects.create_user(**form.cleaned_data)
+        user = authenticate(**form.cleaned_data)
+        login(self.request, user)
+
+        if self.request.GET.get('from'):
+            return redirect(self.request.GET['from'])
+        return redirect('profiles:list')

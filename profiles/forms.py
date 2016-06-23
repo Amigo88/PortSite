@@ -11,10 +11,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = [
-            'user',
-            'first_name',
-            'last_name',
-            'contact_mail',
+            # 'user',
+            # 'first_name',
+            # 'last_name',
+            # 'contact_mail',
+
             'short_description'
         ]
 
@@ -34,3 +35,12 @@ class ProjectForm(forms.ModelForm):
             'name',
             'short_description',
         ]
+
+
+class SignupForm(forms.Form):
+    first_name = forms.CharField(max_length=300)
+    last_name = forms.CharField(max_length=300)
+    username = forms.CharField(max_length=300)
+    password = forms.CharField(max_length=300, widget=forms.PasswordInput())
+    password_validation = forms.CharField(max_length=300, widget=forms.PasswordInput())
+    email = forms.EmailField(max_length=300)

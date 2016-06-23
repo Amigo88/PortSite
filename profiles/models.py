@@ -1,10 +1,21 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.contrib.auth.models import User
+
+#
+# class Owner(models.Model):
+#     user = models.OneToOneField(
+#         settings.AUTH_USER_MODEL,
+#         related_name="owners",
+#     )
+#
+#     def __str__(self):
+#         return "{} {}".format(self.user.first_name, self.user.last_name)
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile")
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     contact_mail = models.EmailField()
