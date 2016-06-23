@@ -1,0 +1,27 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+        {% endbuttons %}
+
+    </form>
+</div>
+
+</body>
+</html>
