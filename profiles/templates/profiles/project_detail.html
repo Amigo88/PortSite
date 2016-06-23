@@ -8,7 +8,7 @@
         <div class="panel-heading">
             <h3 class="text-center">{{ object }}
                 {% if object.profile.user == user %}
-                    <a class="addp" href="{% url "profiles:add_work" object.pk %}">Add Work</a>
+                    <a class="addp" href="{% url "profiles:add_work" project.profile.pk object.pk %}">Add Work</a>
                 {% endif %}
             </h3>
         </div>
@@ -17,9 +17,10 @@
                 {% for photo in object.photos.all %}
                     <div class="col-xs-6 col-sm-4">
                         <a href="#">
+                            <span class="label label-danger">X</span>
                             <img style="width: 65%; height: 65%;" src="{{ photo.image.url }}" class="img-rounded">
                             {% if object.profile.user == user %}
-                                <h4 role="presentation"><a href="{% url "profiles:delete" photo.pk %}">Delete Work</a>
+                                <h4 role="presentation"><a href="{% url "profiles:delete" photo.project.profile.pk photo.pk %}">Delete Work</a>
                                 </h4>
                             {% endif %}
                         </a>

@@ -60,7 +60,7 @@ class UIMixin:
 
 
 class ListProfilesView(UIMixin, LoggedInMixin, ListView):
-    page_title = "Profiles"
+    page_title = "Portfolios"
     model = models.Profile
     # template_name = "profiles\profile_list.html"
 
@@ -100,6 +100,13 @@ class ProfileDetailView(UIMixin, LoggedInMixin, DetailView):
 class ProjectDetailView(UIMixin, LoggedInMixin, DetailView):
     page_title = "Project"
     model = models.Project
+
+    def dispatch(self, request, profile_id, *args, **kwargs):
+        self.profile = get_object_or_404(models.Profile, id=profile_id)
+        return super().dispatch(request, *args, **kwargs)
+
+        def get_queryset(self):
+            return super().get_queryset().filter(project=self.project)
 
 
 class AddWorkView(UIMixin, LoggedInMixin, CreateView):
@@ -151,6 +158,10 @@ class DeleteWorkView(UIMixin, LoggedInMixin, DeleteView):
     model = models.Photo
     form_class = forms.PhotoForm
 
+    def dispatch(self, request, profile_id, *args, **kwargs):
+        self.project = get_object_or_404(models.Profile, id=profile_id)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_object(self, queryset=None):
         obj = super(DeleteWorkView, self).get_object()
         if obj.project.profile.user != self.request.user:
@@ -174,6 +185,10 @@ class DeleteProjectView(UIMixin, LoggedInMixin, DeleteView):
     page_title = "Delete Project"
     model = models.Project
     form_class = forms.ProjectForm
+
+    def dispatch(self, request, profile_id, *args, **kwargs):
+        self.profile= get_object_or_404(models.Profile, id=profile_id)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         obj = super(DeleteProjectView, self).get_object()

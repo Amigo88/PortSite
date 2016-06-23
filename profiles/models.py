@@ -37,7 +37,7 @@ class Project(models.Model):
         return "{}".format(self.name)
 
     def get_absolute_url(self):
-        return reverse("profiles:project_detail", args=(self.pk,))
+        return reverse("profiles:project_detail", args=(self.profile_id, self.pk))
 
 
 class Photo(models.Model):
